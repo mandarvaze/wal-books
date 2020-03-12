@@ -1,7 +1,10 @@
-<ul>
-  <li>Name : {{name}}</li>
-  <li>Authors : {{authors}}</li>
-  <li>Genres : {{genres}}</li>
-</ul>
+{% extends "base_generic.html" %}
 
+{% block content %}
+  <ul>
+    <li>Name : {{name}}</li>
+    <li>Authors : {{authors}}</li>
+    <li>Genres : {{genres}}</li>
+  </ul>
+  {% endblock %}
 

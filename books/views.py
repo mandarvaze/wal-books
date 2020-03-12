@@ -2,15 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
 from .models import Book
-
-
-def index(request):
-    books = Book.objects.all()
-    template = loader.get_template("books/index.html")
-    context = {
-        "books": books,
-    }
-    return HttpResponse(template.render(context, request))
+from django.views import generic
 
 
 def detail(request, book_id):
@@ -22,3 +14,11 @@ def detail(request, book_id):
         "books/detail.html",
         {"name": book.name, "authors": authors, "genres": genres},
     )
+
+
+class IndexView(generic.ListView):
+    template_name = "books/index.html"
+    context_object_name = "books"
+
+    def get_queryset(self):
+        return Book.objects.all()
