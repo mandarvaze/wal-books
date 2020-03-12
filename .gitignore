@@ -1,0 +1,19 @@
+# Python temp files
+*.pyc
+__pycache__
+
+# Virtual environments
+*env*/
+
+bin/
+include/
+lib/
+lib64
+share/
+# The last five directories usually only appear in venvs,
+# so untracking them is a safeguard against cleverly-named
+# virtual environments.
+
+# Developer-specific environment stuff
+.idea/
+.vscode/
