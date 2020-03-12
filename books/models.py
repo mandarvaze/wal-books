@@ -26,6 +26,7 @@ class Book(models.Model):
     name = models.CharField(max_length=100)
     genres = models.ManyToManyField(Genre)
     authors = models.ManyToManyField(Author)
+    # TODO: Add user who created this entru. Useful if we need to restrict only the creator to update.
 
     class Meta:
         ordering = ["name"]
