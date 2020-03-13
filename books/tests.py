@@ -2,7 +2,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase
 
 from .models import Author, Book
-from .views import IndexView, author_book_names
+from .views import IndexView, author_book_names, new_book
 
 
 class HomeTests(TestCase):
@@ -90,3 +90,25 @@ class AuthorIndexViewTests(TestCase):
         assert "<h1>Authors with at least</h1>" not in str(response.content)
         assert "<h1>Authors without any Books</h1>" in str(response.content)
         assert f"{author_fname} {author_lname}" in str(response.content)
+
+
+class NewBookTests(TestCase):
+    def test_authenticated_access(self):
+        """
+        User needs to login, in order to add a new book
+        """
+        response = self.client.get("/books/new/")
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/books/new/",
+            status_code=302,
+            target_status_code=200,
+        )
+
+    def test_new_book(self):
+        factory = RequestFactory()
+        request = factory.get("/books/new/")
+        request.user = AnonymousUser()
+        response = new_book(request)
+        self.assertEqual(response.status_code, 200)
+        assert "Add a New Book" in str(response.content)

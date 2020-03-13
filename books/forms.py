@@ -1,6 +1,9 @@
+from django import forms
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
+
+from .models import Book
 
 
 def signup(request):
@@ -16,3 +19,9 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, "registration/signup.html", {"form": form})
+
+
+class NewBookForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ["name", "authors", "genres"]
