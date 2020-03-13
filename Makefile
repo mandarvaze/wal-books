@@ -10,6 +10,22 @@ install:
 dev:
 	@python manage.py runserver
 
+.PHONY: unit
+unit:
+	@python manage.py test
+
+.PHONY: format
+format:
+	@isort -rc books prj manage.py
+	@black books prj manage.py
+
+.PHONY: lint
+lint:
+	@flake8
+
+.PHONY: tests
+tests: unit format lint
+
 # Start database in docker in foreground
 .PHONY: pgsql
 pgsql:
