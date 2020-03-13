@@ -16,6 +16,16 @@ class HomeTests(TestCase):
         )
 
 
+class SignupTests(TestCase):
+    def test_signup(self):
+        response = self.client.get("/signup/")
+        html = str(response.content)
+        assert response.status_code == 200
+        fields = ["Username:", "Password:", "Password confirmation:"]
+        for fld in fields:
+            assert fld in html
+
+
 class BookIndexViewTests(TestCase):
     def test_authenticated_access(self):
         """
