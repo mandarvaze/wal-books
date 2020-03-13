@@ -15,11 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path("books/", include("books.urls")),
     path("authors/", include("books.author_urls")),
     path("admin/", admin.site.urls),
+]
+
+# Add URL maps to redirect the base URL to our application
+urlpatterns += [
+    path("", RedirectView.as_view(url="/books/", permanent=True)),
 ]
 
 # Add Django site authentication urls (for login, logout, password management)

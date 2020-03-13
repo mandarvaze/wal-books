@@ -5,6 +5,17 @@ from .models import Author, Book
 from .views import AuthorsIndexView, IndexView
 
 
+class HomeTests(TestCase):
+    def test_home_redirects(self):
+        """
+        "/" redirects to "/books"
+        """
+        response = self.client.get("/")
+        self.assertRedirects(
+            response, "/books/", status_code=301, target_status_code=302
+        )
+
+
 class BookIndexViewTests(TestCase):
     def test_authenticated_access(self):
         """
