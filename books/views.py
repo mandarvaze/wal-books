@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 
-from .models import Book
+from .models import Author, Book
 
 
 def detail(request, book_id):
@@ -21,3 +21,11 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         return Book.objects.all()
+
+
+class AuthorsIndexView(generic.ListView):
+    template_name = "authors/index.html"
+    context_object_name = "authors"
+
+    def get_queryset(self):
+        return Author.objects.all()

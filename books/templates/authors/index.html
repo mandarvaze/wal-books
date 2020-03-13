@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Authors</h1>
+  {% if authors %}
+  <ul>
+    {% for author in authors %}
+    <li><a href="#">{{ author }}</a></li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No authors are available.</p>
+  {% endif %}
+{% endblock %}
