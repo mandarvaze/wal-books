@@ -1,14 +1,22 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Authors</h1>
-  {% if authors %}
+  {% if with_books %}
+  <h1>Authors with at least one Book</h1>
   <ul>
-    {% for author in authors %}
+    {% for author in with_books %}
     <li><a href="#">{{ author }}</a></li>
     {% endfor %}
   </ul>
-  {% else %}
-  <p>No authors are available.</p>
   {% endif %}
-{% endblock %}
+
+  {% if without_books %}
+  <h1>Authors without any Books</h1>
+  <ul>
+    {% for author in without_books %}
+    <li><a href="#">{{ author }}</a></li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% endblock %}

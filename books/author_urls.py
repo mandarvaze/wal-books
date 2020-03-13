@@ -4,5 +4,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", login_required(views.AuthorsIndexView.as_view()), name="authors_index"),
+    path("", login_required(views.author_book_names), name="authors_index"),
 ]

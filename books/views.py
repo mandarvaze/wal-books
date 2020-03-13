@@ -23,9 +23,11 @@ class IndexView(generic.ListView):
         return Book.objects.all()
 
 
-class AuthorsIndexView(generic.ListView):
-    template_name = "authors/index.html"
-    context_object_name = "authors"
-
-    def get_queryset(self):
-        return Author.objects.all()
+def author_book_names(request):
+    without_books = Author.objects.filter(book__isnull=True).all()
+    with_books = Author.objects.exclude(book__isnull=True).all()
+    return render(
+        request,
+        "authors/index.html",
+        {"with_books": with_books, "without_books": without_books},
+    )

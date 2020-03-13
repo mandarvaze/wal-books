@@ -2,7 +2,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase
 
 from .models import Author, Book
-from .views import AuthorsIndexView, IndexView
+from .views import IndexView, author_book_names
 
 
 class HomeTests(TestCase):
@@ -62,10 +62,9 @@ class AuthorIndexViewTests(TestCase):
         factory = RequestFactory()
         request = factory.get("/authors/")
         request.user = AnonymousUser()
-        response = AuthorsIndexView.as_view()(request)
+        response = author_book_names(request)
         self.assertEqual(response.status_code, 200)
-        assert "authors" in response.context_data
-        assert response.context_data["authors"].count() == 0
+        assert "Authors with" not in str(response.content)
 
     def test_authors(self):
         author_fname = "Daniel"
@@ -76,9 +75,8 @@ class AuthorIndexViewTests(TestCase):
         factory = RequestFactory()
         request = factory.get("/authors/")
         request.user = AnonymousUser()
-        response = AuthorsIndexView.as_view()(request)
+        response = author_book_names(request)
         self.assertEqual(response.status_code, 200)
-        assert "authors" in response.context_data
-        assert response.context_data["authors"].count() == 1
-        assert response.context_data["authors"].get().first_name == author_fname
-        assert response.context_data["authors"].get().last_name == author_lname
+        assert "<h1>Authors with at least</h1>" not in str(response.content)
+        assert "<h1>Authors without any Books</h1>" in str(response.content)
+        assert f"{author_fname} {author_lname}" in str(response.content)
