@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
 
-from .models import Book
+from .models import Author, Book
 
 
 def signup(request):
@@ -25,3 +25,9 @@ class NewBookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ["name", "authors", "genres"]
+
+
+class NewAuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = "__all__"

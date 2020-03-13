@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import generic
 
-from .forms import NewBookForm
+from .forms import NewAuthorForm, NewBookForm
 from .models import Author, Book
 
 
@@ -39,8 +39,18 @@ def new_book(request):
         form = NewBookForm(request.POST)
         if form.is_valid():
             form.save()
-            # book = Book.objects.create(name=form.cleaned_data.get("name"))
             return redirect("/books/")
     else:
         form = NewBookForm()
     return render(request, "books/new_book.html", {"form": form})
+
+
+def new_author(request):
+    if request.method == "POST":
+        form = NewAuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/authors/")
+    else:
+        form = NewAuthorForm()
+    return render(request, "books/new_author.html", {"form": form})

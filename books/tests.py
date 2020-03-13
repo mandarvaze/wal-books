@@ -2,7 +2,7 @@ from django.contrib.auth.models import AnonymousUser
 from django.test import RequestFactory, TestCase
 
 from .models import Author, Book
-from .views import IndexView, author_book_names, new_book
+from .views import IndexView, author_book_names, new_author, new_book
 
 
 class HomeTests(TestCase):
@@ -112,3 +112,25 @@ class NewBookTests(TestCase):
         response = new_book(request)
         self.assertEqual(response.status_code, 200)
         assert "Add a New Book" in str(response.content)
+
+
+class NewAuthorTests(TestCase):
+    def test_authenticated_access(self):
+        """
+        User needs to login, in order to add a new book
+        """
+        response = self.client.get("/authors/new/")
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/authors/new/",
+            status_code=302,
+            target_status_code=200,
+        )
+
+    def test_new_author(self):
+        factory = RequestFactory()
+        request = factory.get("/authors/new/")
+        request.user = AnonymousUser()
+        response = new_author(request)
+        self.assertEqual(response.status_code, 200)
+        assert "Add a New Author" in str(response.content)
