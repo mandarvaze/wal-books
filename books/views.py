@@ -1,8 +1,7 @@
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.template import loader
-from .models import Book
 from django.views import generic
+
+from .models import Book
 
 
 def detail(request, book_id):
