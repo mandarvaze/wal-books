@@ -1,0 +1,30 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Books</h1>
+
+<table border="1">
+<thead>
+    <tr>
+    <th>Name</th>
+    <th>View</th>
+    <th>Edit</th>
+    <th>Delete</th>
+    </tr>
+</thead>
+<tbody>
+    {% for book in object_list %}
+    <tr>
+    <td>{{ book.name }}</td>
+    <td><a href="{% url "book_view" book.id %}">view</a></td>
+    <td><a href="{% url "book_edit" book.id %}">edit</a></td>
+    <td><a href="{% url "book_delete" book.id %}">delete</a></td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<button class="btn btn-success" onclick="window.location.href='/books/new'">Add New Book</button>
+
+{% endblock %}

@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views import generic
+from django.urls import reverse_lazy
+from django.views.generic import ListView
+from django.views.generic.edit import DeleteView, UpdateView
 
 from .forms import NewAuthorForm, NewBookForm
 from .models import Author, Book
@@ -16,12 +18,30 @@ def detail(request, book_id):
     )
 
 
-class IndexView(generic.ListView):
-    template_name = "books/index.html"
-    context_object_name = "books"
+def new_book(request):
+    if request.method == "POST":
+        form = NewBookForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/books/")
+    else:
+        form = NewBookForm()
+    return render(request, "books/new_book.html", {"form": form})
 
-    def get_queryset(self):
-        return Book.objects.all()
+
+class BookList(ListView):
+    model = Book
+
+
+class BookUpdate(UpdateView):
+    model = Book
+    fields = "__all__"
+    success_url = reverse_lazy("book_list")
+
+
+class BookDelete(DeleteView):
+    model = Book
+    success_url = reverse_lazy("book_list")
 
 
 def author_book_names(request):
@@ -32,17 +52,6 @@ def author_book_names(request):
         "authors/index.html",
         {"with_books": with_books, "without_books": without_books},
     )
-
-
-def new_book(request):
-    if request.method == "POST":
-        form = NewBookForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("/books/")
-    else:
-        form = NewBookForm()
-    return render(request, "books/new_book.html", {"form": form})
 
 
 def new_author(request):
